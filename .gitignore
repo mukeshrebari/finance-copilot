@@ -1,0 +1,31 @@
+# --- .NET ---
+bin/
+obj/
+*.user
+
+# --- Node / TypeScript ---
+node_modules/
+dist/
+*.tsbuildinfo
+.npm/
+
+# --- Python ---
+__pycache__/
+*.pyc
+.venv/
+venv/
+.pytest_cache/
+
+# --- Env / secrets (never commit) ---
+.env
+.env.local
+*.key
+
+# --- Editor / OS ---
+.vscode/
+.idea/
+.DS_Store
+
+# --- Local data / artifacts ---
+*.duckdb
+/**/data/local/
