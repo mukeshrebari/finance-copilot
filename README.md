@@ -4,6 +4,8 @@
 
 Real operational questions cross service boundaries — *"which trucks are due for service, and are those customers behind on their freight bills?"* answers only if fleet data and billing data are consulted together. This repo models that with one coordinator agent orchestrating three independent service-agents, so each stays focused and independently deployable while the brain composes their answers.
 
+**Stack & status:** .NET 10 · Microsoft Agent Framework 1.13 · tool layer 6/6 tests green · live brain needs OPENAI_API_KEY
+
 ---
 
 ## Architecture
@@ -69,3 +71,10 @@ cross-service one ("for any vehicle due for maintenance, is its customer's billi
 watch the brain consult `ask_fleet` then `ask_billing` and merge the result.
 
 See **[GUIDE.md](./GUIDE.md)** to build it from scratch and add a fourth service.
+
+## Trade-offs & when not to reach for this
+
+- **In-process microservices.** The three services are class libraries standing in for deployables; the real network boundary (HTTP/MCP) is left as a documented next step.
+- **Fan-out latency and cost.** Each brain question triggers 1–3 LLM sub-agent calls; cache and parallelize before high volume.
+- **Read-only stubs.** A write-capable tool needs an approval/guardrail step before it goes near production.
+- **When not to use it:** for one bounded domain with a few tools, a single agent is simpler than a coordinator + specialists.
